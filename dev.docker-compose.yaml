@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  auto-order-postgres:
+    container_name: auto-order-postgres
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: django_develop_way
+    ports:
+      - 5434:5432
+
+  auto-order-redis:
+      container_name: auto-order-redis
+      image: redis:6.0.5-alpine
+      ports:
+        - 6381:6379
