@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "django-develop-way"
+version = "0.1.0"
+description = ""
+authors = ["Pavel Larchenko <lar.pasha.chenko@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.11.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
