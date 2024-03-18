@@ -2,7 +2,7 @@ version: '3'
 
 services:
   auto-order-postgres:
-    container_name: auto-order-postgres
+    container_name: django_develop_way
     image: postgres:16-alpine
     environment:
       POSTGRES_PASSWORD: postgres
