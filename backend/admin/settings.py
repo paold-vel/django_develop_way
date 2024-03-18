@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'django_guid.middleware.guid_middleware',
 ]
 
-ROOT_URLCONF = 'backend.admin.urls'
+ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
     {
@@ -93,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.admin.wsgi.application'
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
