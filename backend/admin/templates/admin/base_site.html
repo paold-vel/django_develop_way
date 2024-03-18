@@ -1,0 +1,32 @@
+{% extends "admin/base_site.html" %}
+{% block extrastyle %}
+    <style type="text/css">
+        body:before {
+            display: block;
+            height: 35px;
+            content: "";
+            background-color: #00000000;
+            z-index: -1;
+        }
+        .status_header {
+            z-index: 1;
+            color: white;
+            text-transform: uppercase;
+            font-weight: bold;
+            position: absolute;
+            top: -35px;
+            width: 100%;
+            left: 0px;
+            background-color: {{ ENVIRONMENT_COLOR }};
+            display: block;
+            text-align: center;
+            line-height: 35px;
+        }
+    </style>
+{% endblock %}
+{% block branding %}
+<div class="status_header">
+    <a>{{ ENVIRONMENT_NAME }}</a>
+</div>
+{{block.super}}
+{% endblock %}

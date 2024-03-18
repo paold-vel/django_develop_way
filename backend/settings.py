@@ -44,6 +44,7 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['*'])
 
 # Application definition
 INSTALLED_APPS = [
+    'backend.admin',
     'backend.products',
     'backend.core',
 
@@ -85,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'backend.admin.context_processors.from_settings',
             ],
         },
     },
