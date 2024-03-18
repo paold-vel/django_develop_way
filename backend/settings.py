@@ -12,25 +12,43 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 
+import dj_database_url
+from environs import Env
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Env settings
+env = Env()
+env.read_env(path=str(BASE_DIR / '.env'))
+ENVIRONMENT_NAME = env.str('ENVIRONMENT_NAME', 'local')
+ENVIRONMENT_COLORS = {
+    'local': '#555555',
+    'dev': '#009900',
+    'prod': '#FF4444',
+}
+ENVIRONMENT_COLOR = ENVIRONMENT_COLORS[ENVIRONMENT_NAME]
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@z@4thj2)q_3t$3rnx_o@exmsc0bbzuqbrn0j-$%vflp!(gi94'
+SECRET_KEY = env.str('SECRET_KEY', '1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['*'])
 
 
 # Application definition
-
 INSTALLED_APPS = [
+    'rest_framework',
+    'drf_spectacular',
+    'django_filters',
+    'corsheaders',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,11 +60,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_guid.middleware.guid_middleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -74,9 +94,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
+    'default': dj_database_url.config(
+        default='postgres://postgres:postgres@localhost:5434/django_develop_way?application_name=default',
+        env='DATABASE_URL',
+    )
+}
+
+
+# Cache
+BROKER_URL = env.str('BROKER_URL', 'redis://127.0.0.1:6380/1')
+CACHES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': BROKER_URL,
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }
 
@@ -121,3 +154,36 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# REST settings
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DATETIME_FORMAT': '%Y-%m-%d %H:%M:%S',
+    'DEFAULT_AUTHENTICATION_CLASSES': (),
+    'DEFAULT_PERMISSION_CLASSES': (),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    'EXCEPTION_HANDLER': 'backend.core.exceptions.base_exception_handler',
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+}
+
+SPECTACULAR_SETTINGS = {
+    'SERVERS': [
+        {'url': env.str('SWAGGER_URL_SERVER', default='http://localhost:8000')},
+    ],
+    'TITLE': 'Django Develop Way API',
+    'VERSION': '0.1.0',
+    'DESCRIPTION': 'Django Develop Way',
+    'SERVE_PERMISSIONS': ['rest_framework.permissions.AllowAny'],
+    'SERVE_INCLUDE_SCHEMA': True,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'displayOperationId': True,
+        'showExtensions': True,
+        'showCommonExtensions': True,
+    },
+    'POSTPROCESSING_HOOKS': [
+        'drf_spectacular.hooks.postprocess_schema_enums',
+    ],
+}
