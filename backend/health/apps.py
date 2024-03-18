@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AdminConfig(AppConfig):
+class HealthConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'backend.admin'
+    name = 'backend.health'

@@ -44,14 +44,15 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['*'])
 
 # Application definition
 INSTALLED_APPS = [
-    'backend.admin',
     'backend.products',
     'backend.core',
+    'backend.health',
 
     'rest_framework',
     'drf_spectacular',
     'django_filters',
     'corsheaders',
+    'django_guid',
 
     'django.contrib.admin',
     'django.contrib.auth',
