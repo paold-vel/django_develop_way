@@ -45,6 +45,7 @@ ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', ['*'])
 # Application definition
 INSTALLED_APPS = [
     'backend.products',
+    'backend.core',
 
     'rest_framework',
     'drf_spectacular',
