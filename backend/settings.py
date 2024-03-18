@@ -102,7 +102,7 @@ DATABASES = {
 
 
 # Cache
-BROKER_URL = env.str('BROKER_URL', 'redis://127.0.0.1:6380/1')
+BROKER_URL = env.str('BROKER_URL', 'redis://127.0.0.1:6381/1')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
