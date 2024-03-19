@@ -16,3 +16,7 @@ $ cd <root_dir>/.git/
 $ pre-commit install
 > pre-commit installed at .git/hooks/pre-commit
 ```
+
+
+1. Нельзя использовать ModelSerializer
+2. Нельзя использовать blank=True
