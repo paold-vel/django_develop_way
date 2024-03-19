@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  auto-order-postgres:
+  django-develop-postgres:
     container_name: django-develop-postgres
     image: postgres:16-alpine
     environment:
@@ -11,7 +11,7 @@ services:
     ports:
       - 5434:5432
 
-  auto-order-redis:
+  django-develop-redis:
       container_name: django-develop-redis
       image: redis:6.0.5-alpine
       ports:
